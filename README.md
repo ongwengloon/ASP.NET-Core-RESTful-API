@@ -49,8 +49,13 @@ services.AddDbContext<EmployeeContext>(opt => opt.UseInMemoryDatabase("EmployeeL
 https://www.getpostman.com/collections/ddec90914d612cf9dcf8
 
 ## Implement Swagger
+```ps
+View > Other Windows > Package Manager Console
+Install-Package Swashbuckle.AspNetCore -Version 5.0.0-rc4
+```
+![swagger_api](https://github.com/ongwengloon/ASP.NET-Core-RESTful-API/blob/master/swagger_api.png)
 
-## Issue
+## FAQ
 If encounter an issue about _'project.assets.json not found'_ try below solution.
 ```cs
      Tools > NuGet Package Manager > Package Manager Console run: dotnet restore
