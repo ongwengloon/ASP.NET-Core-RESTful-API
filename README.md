@@ -1,5 +1,5 @@
 # ASP.NET-Core-RESTful-API
-A Simple RESTful API project build with ASP .NET Core
+A Simple RESTful API project using ASP .NET Core and Swagger
 
 ## StartUp.cs (Start up)
 Use InMemory Database as demo data
