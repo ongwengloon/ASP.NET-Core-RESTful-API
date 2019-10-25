@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.JsonPatch;
 
 namespace ASP.NET_Core_RESTful_API.Controllers
 {
+    [Produces("application/json")]
     [Route("api/[controller]")]
     [ApiController]
     public class EmployeeController : ControllerBase
@@ -23,20 +24,33 @@ namespace ASP.NET_Core_RESTful_API.Controllers
             if (_context.EmployeeItems.Count() == 0)
             {
                 // Create a new EmployeeItem if collection is empty, which means you can't delete all Employee.
-                _context.EmployeeItems.Add(new Employee { FirstName = "Sky" });
+                _context.EmployeeItems.Add(new Employee { FirstName = "Sky", LastName = "Ong"});
                 _context.SaveChanges();
             }
         }
 
         // GET: api/Employee
+        /// <summary>
+        /// Retrieve full list for Employee 
+        /// </summary>
+        /// <returns>A list of Employee</returns>
+        /// <response code="404">Employee not found</response>
         [HttpGet]
+        [ProducesResponseType(200)]
+        [ProducesResponseType(404)]
         public async Task<ActionResult<IEnumerable<Employee>>> GetEmployeeItems()
         {
             return await _context.EmployeeItems.ToListAsync();
         }
 
         // GET: api/Employee/1
+        /// <summary>
+        /// Retrieve specific for 1 Employee 
+        /// </summary>
+        /// <response code="404">Employee not found</response>
         [HttpGet("{id}")]
+        [ProducesResponseType(200)]
+        [ProducesResponseType(404)]
         public async Task<ActionResult<Employee>> GetEmployeeItem(long id)
         {
             var item = await _context.EmployeeItems.FindAsync(id);
@@ -50,7 +64,15 @@ namespace ASP.NET_Core_RESTful_API.Controllers
         }
 
         // POST: api/Employee
+        /// <summary>
+        /// Create a new Employee
+        /// </summary>
+        /// <returns>A newly created Employee</returns>
+        /// <response code="201">Returns the newly created Employee</response>
+        /// <response code="400">If the Employee is null</response>
         [HttpPost]
+        [ProducesResponseType(201)]
+        [ProducesResponseType(400)]
         public async Task<ActionResult<Employee>> PostEmployeeItem(Employee item)
         {
             _context.EmployeeItems.Add(item);
@@ -60,7 +82,12 @@ namespace ASP.NET_Core_RESTful_API.Controllers
         }
 
         // PUT: api/Employee/1
+        /// <summary>
+        /// Update a specific Employee
+        /// </summary>
         [HttpPut("{id}")]
+        [ProducesResponseType(200)]
+        [ProducesResponseType(404)]
         public async Task<ActionResult<Employee>> PutEmployeeItem(long id, Employee item)
         {
             if (id != item.Id)
@@ -75,7 +102,12 @@ namespace ASP.NET_Core_RESTful_API.Controllers
         }
 
         // DELETE: api/Employee/1
+        /// <summary>
+        /// delete a specific Employee
+        /// </summary>
         [HttpDelete("{id}")]
+        [ProducesResponseType(200)]
+        [ProducesResponseType(404)]
         public async Task<IActionResult> DeleteEmployeeItem(long id)
         {
             var item = await _context.EmployeeItems.FindAsync(id);
@@ -92,6 +124,9 @@ namespace ASP.NET_Core_RESTful_API.Controllers
         }
 
         /// <summary>
+        /// Update Partial Employee
+        /// </summary>
+        /// <remarks>
         /// Sample PATCH JSON
         /// [
 	    ///     {"op" : "test", "path": "id", "value": "1"}, //To validate is the id is '1', else request will fail
@@ -101,7 +136,7 @@ namespace ASP.NET_Core_RESTful_API.Controllers
 	    ///     {"op" : "add", "path" : "lastName", "value" : "Ong"}, //Add if empty or update if contain value
 	    ///     {"op" : "replace", "path" : "lastName", "value" : "Ong Weng Loon"} //Replaces a value. Equivalent to a “remove” followed by an “add”.
         /// ]
-        /// </summary>
+        /// </remarks>
         /// <param name="id"></param>
         /// <param name="itemPatch"></param>
         /// <returns></returns>
